@@ -839,7 +839,7 @@ Function Parse-Logs
             or
             *[System[(EventID='4688')]
             and
-            EventData[Data[@Name='TokenElevationType']='\%\%1936']
+            EventData[Data[@Name='TokenElevationType']='%%1936']
             or
             EventData[Data[@Name='CommandLine']='\??\C:\WINDOWS\system32\conhost.exe 0xffffffff -ForceV1']]
             </Suppress>
