@@ -665,9 +665,15 @@ Function Copy-EventLogsToArchive($path, $folder, [ref]$ColErrs) {
     $testarchiveLog = test-path "$LogsArchive\$logName"
     $origlogHash = Hash($path)
     $netlogHash = Hash("$LogsArchive\$logName")
-    if ($testarchiveLog -eq "True" -and $netlogHash -eq $origlogHash) {
-        if ($testbackupLoc -eq "True") {
-            if ($testbackupLog -ne "True" -or $backupHash -ne $origlogHash) {
+    if ($testarchiveLog -and $netlogHash -eq $origlogHash) {
+    if ($testbackupLoc) {
+        if (-not $testbackupLog -or $backupHash -ne $origlogHash) {
+            "        - Could not determine if the $logType log on $computer was successfully copied to the backup location. Copy manually." |
+                Add-Content -Path $outputFile -PassThru | Write-Host -ForegroundColor Red
+        }
+    }
+    Remove-Item $path -Force
+}
                 "        - Could not determine if the $logType log on $computer was successfully copied to the backup location. Copy manually." | Add-Content -Path $outputFile -PassThru | write-host -ForegroundColor Red
             } #end if
         }#end if 
